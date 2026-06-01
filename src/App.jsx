@@ -235,22 +235,54 @@ function MenuButton() {
   );
 }
 
+function MetricIcon({ type }) {
+  if (type === "rating") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M9 21h6" />
+        <path d="M12 17v4" />
+        <path d="M7 4h10v5a5 5 0 0 1-10 0V4Z" />
+        <path d="M7 7H4.5a2.5 2.5 0 0 0 2.5 2.5" />
+        <path d="M17 7h2.5A2.5 2.5 0 0 1 17 9.5" />
+        <path d="M10 8.5h4" />
+      </svg>
+    );
+  }
+
+  if (type === "years") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 9h16v9H4z" />
+        <path d="M8 9V6h8v3" />
+        <path d="M8 14h3l2-3 2 5 2-2h3" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M9 7a3 3 0 1 1 6 0 3 3 0 0 1-6 0Z" />
+      <path d="M6 20a6 6 0 0 1 12 0" />
+      <path d="M17 13h4" />
+      <path d="M19 11v4" />
+    </svg>
+  );
+}
+
 function FeaturePill({ className, icon, label, delay }) {
   return (
     <motion.div
       className={`feature-pill ${className}`}
-      initial={{ opacity: 0, y: 26, filter: "blur(6px)" }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, filter: "blur(6px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
       transition={{ duration: 0.9, delay, ease }}
     >
-      <motion.span
-        className="feature-icon"
-        animate={{ y: [0, -7, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay }}
-      >
-        {icon}
-      </motion.span>
-      <span className="feature-label">{label}</span>
+      <span className="feature-pill-float">
+        <span className="feature-icon">
+          <MetricIcon type={icon} />
+        </span>
+        <span className="feature-label">{label}</span>
+      </span>
     </motion.div>
   );
 }
@@ -273,7 +305,7 @@ function HeroImage() {
 
       <div className="image-card">
         <motion.img
-          src="/counter.webp"
+          src="/Home_page.webp"
           alt="Santhi Eye Tech reception"
           initial={{ scale: 1.08 }}
           animate={{ scale: 1.04 }}
@@ -291,40 +323,34 @@ function HeroImage() {
 
       <FeaturePill
         className="pill-rating"
-        icon="4.9"
-        label="Google Rating"
+        icon="rating"
+        label="4.9 Google Rating"
         delay={0.42}
       />
       <FeaturePill
         className="pill-years"
-        icon="20+"
-        label="Years Experience"
+        icon="years"
+        label="20+ Years Experience"
         delay={0.56}
       />
       <FeaturePill
         className="pill-procedures"
-        icon="1k+"
-        label="Procedures"
+        icon="procedures"
+        label="1000+ Procedures"
         delay={0.7}
       />
 
-      <motion.div
-        className="location-pill"
-        initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        transition={{ duration: 0.9, delay: 0.85, ease }}
-      >
-        <span />
-        INDORE - SINCE 2003
-      </motion.div>
-
-      <motion.div
-        className="mouse-cutout"
-        animate={{ y: [0, 9, 0] }}
-        transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <span />
-      </motion.div>
+      <div className="location-pill">
+        <motion.span
+          className="location-pill-inner"
+          initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.9, delay: 0.85, ease }}
+        >
+          <span />
+          INDORE - SINCE 2003
+        </motion.span>
+      </div>
     </motion.div>
   );
 }
@@ -368,6 +394,10 @@ function Hero() {
       </motion.article>
 
       <HeroImage />
+
+      <div className="mouse-cutout scroll-hint" aria-hidden="true">
+        <span />
+      </div>
     </section>
   );
 }

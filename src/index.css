@@ -129,7 +129,7 @@ main {
 
 .copy-center {
   width: 520px;
-  margin-top: 20px;
+  margin-top: 44px;
 }
 
 .section-label {
@@ -168,7 +168,7 @@ main {
   font-size: 62px;
   line-height: 1.12;
   letter-spacing: 0;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .copy-center p {
@@ -235,6 +235,19 @@ main {
 .hero-media {
   overflow: visible;
   isolation: isolate;
+}
+
+.hero-media::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  bottom: -1px;
+  width: 118px;
+  height: 88px;
+  border-top-right-radius: 48px;
+  background: var(--cream);
+  z-index: 2;
+  pointer-events: none;
 }
 
 .clip-defs {
@@ -321,79 +334,111 @@ main {
 .feature-pill {
   position: absolute;
   z-index: 6;
+  width: fit-content;
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  white-space: nowrap;
+  animation: cardFloat 5.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.feature-pill-float {
   display: flex;
   align-items: center;
+  gap: 12px;
 }
 
 .feature-icon {
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   flex: 0 0 auto;
   display: grid;
   place-items: center;
   border-radius: 999px;
-  color: var(--aqua);
-  background: rgba(255, 255, 255, 0.84);
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.12);
-  font-size: 14px;
-  font-weight: 800;
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
+
+.feature-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .feature-label {
-  min-width: 220px;
-  margin-left: -4px;
-  padding: 15px 24px;
-  border: 1px solid var(--soft-line);
-  border-radius: 999px;
-  background: rgba(174, 162, 126, 0.62);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 18px 48px rgba(22, 15, 8, 0.18);
   color: var(--white);
   font-size: 18px;
   line-height: 1;
-  font-weight: 500;
-  text-align: center;
+  font-weight: 400;
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.2);
 }
 
 .pill-rating {
-  top: 52.8%;
-  right: 7.4%;
+  top: 30%;
+  right: 4%;
+  animation-delay: 0.2s;
 }
 
 .pill-years {
-  top: 66.6%;
-  right: 9.2%;
+  top: 48%;
+  right: 3%;
+  animation-delay: 0.7s;
 }
 
 .pill-procedures {
-  top: 80.6%;
-  right: 2%;
+  top: 64%;
+  right: 4%;
+  animation-delay: 1.1s;
 }
 
 .location-pill {
   position: absolute;
-  left: 40.8%;
+  left: 0;
+  right: 0;
   bottom: 28px;
   z-index: 6;
-  min-width: 286px;
-  margin-left: -143px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 13px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.42);
-  background: rgba(166, 139, 92, 0.68);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.14);
-  backdrop-filter: blur(18px);
-  color: var(--white);
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: 0.01em;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 20px 0 28px;
 }
 
-.location-pill span {
+.location-pill-inner {
+  position: relative;
+  width: max-content;
+  max-width: 100%;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--white);
+  padding: 10px 22px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  will-change: transform;
+}
+
+.location-pill-inner > span {
+  position: relative;
+  z-index: 1;
   width: 14px;
   height: 14px;
   flex: 0 0 auto;
@@ -401,17 +446,42 @@ main {
   background: var(--aqua);
 }
 
+@keyframes cardFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -9px, 0);
+  }
+}
+
+@keyframes glassSweep {
+  0%,
+  42% {
+    transform: translateX(-56%);
+  }
+
+  68%,
+  100% {
+    transform: translateX(56%);
+  }
+}
+
 .mouse-cutout {
   position: absolute;
-  left: 0;
+  left: 50%;
   bottom: 0;
-  z-index: 7;
-  width: 92px;
-  height: 82px;
+  z-index: 15;
+  transform: translateX(-50%);
+  width: 88px;
+  height: 74px;
   display: grid;
   place-items: center;
-  border-top-right-radius: 40px;
+  border-radius: 999px;
   background: var(--cream);
+  pointer-events: none;
 }
 
 .mouse-cutout span {
@@ -1504,40 +1574,49 @@ main {
   }
 
   .feature-label {
-    min-width: 168px;
-    padding: 13px 18px;
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .feature-icon {
-    width: 44px;
-    height: 44px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .feature-icon svg {
+    width: 16px;
+    height: 16px;
   }
 
   .pill-rating {
-    right: 3%;
+    top: 30%;
+    right: 4%;
   }
 
   .pill-years {
-    right: 7%;
+    top: 48%;
+    right: 4%;
   }
 
   .pill-procedures {
-    right: 0;
+    top: 64%;
+    right: 4%;
   }
 
   .location-pill {
-    left: 50%;
+    left: 0;
+    right: 0;
     bottom: 24px;
-    min-width: 236px;
-    margin-left: -118px;
-    padding: 12px 22px;
-    font-size: 15px;
+    padding: 0 16px;
+  }
+
+  .location-pill-inner {
+    padding: 10px 18px;
+    font-size: 14px;
   }
 
   .mouse-cutout {
-    width: 78px;
-    height: 72px;
+    width: 72px;
+    height: 62px;
   }
 
   .about-stats {
@@ -1738,6 +1817,12 @@ main {
   .specialist-buttons .cta-button {
     width: 100%;
     min-width: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .scroll-hint {
+    display: none;
   }
 }
 
@@ -3053,6 +3138,29 @@ main {
   font-size: 13px;
   color: #5a5a5a;
   line-height: 1;
+}
+
+.about-stats,
+.technology-section,
+.services-section,
+.specialist-section,
+.benefits-section,
+.awards-section,
+.testimonials-section,
+.faq-section,
+.cta-banner-section,
+.footer-section {
+  background: transparent;
+}
+
+.about-stats::before,
+.technology-section::before,
+.services-section::before,
+.specialist-section::before,
+.benefits-section::before,
+.faq-section::before,
+.cta-banner-section::before {
+  display: none;
 }
 
 @media (max-width: 1100px) {
