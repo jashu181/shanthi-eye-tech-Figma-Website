@@ -35,3 +35,4 @@ coverage/
 
 # Local embedded repo/mirror folder
 https:/
+.vercel

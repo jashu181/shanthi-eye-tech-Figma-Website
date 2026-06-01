@@ -9,14 +9,15 @@ import {
 } from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1];
+const sectionViewport = { once: true, amount: 0.18 };
 
 const reveal = {
-  hidden: { opacity: 0, y: 34, filter: "blur(14px)" },
+  hidden: { opacity: 0, y: 26, filter: "blur(6px)" },
   show: {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.95, ease }
+    transition: { duration: 1.05, ease }
   }
 };
 
@@ -44,12 +45,12 @@ const serviceCardReveal = {
 };
 
 const docCardReveal = {
-  hidden: { opacity: 0, y: 28, filter: "blur(12px)" },
+  hidden: { opacity: 0, y: 26, filter: "blur(6px)" },
   show: (i) => ({
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.92, delay: i * 0.1, ease }
+    transition: { duration: 0.9, delay: i * 0.1, ease }
   })
 };
 
@@ -174,9 +175,12 @@ function useLenis(disabled) {
     if (disabled) return undefined;
 
     const lenis = new Lenis({
-      duration: 1.05,
-      easing: (t) => Math.min(1, 1.001 - 2 ** (-10 * t)),
-      smoothWheel: true
+      duration: 1.65,
+      easing: (t) => 1 - Math.pow(1 - t, 4),
+      smoothWheel: true,
+      syncTouch: false,
+      wheelMultiplier: 0.72,
+      touchMultiplier: 0.85
     });
 
     let frameId;
@@ -235,7 +239,7 @@ function FeaturePill({ className, icon, label, delay }) {
   return (
     <motion.div
       className={`feature-pill ${className}`}
-      initial={{ opacity: 0, y: 26, filter: "blur(12px)" }}
+      initial={{ opacity: 0, y: 26, filter: "blur(6px)" }}
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.9, delay, ease }}
     >
@@ -255,7 +259,7 @@ function HeroImage() {
   return (
     <motion.div
       className="hero-media"
-      initial={{ opacity: 0, x: 38, filter: "blur(16px)" }}
+      initial={{ opacity: 0, x: 38, filter: "blur(8px)" }}
       animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
       transition={{ duration: 1, ease, delay: 0.12 }}
     >
@@ -306,7 +310,7 @@ function HeroImage() {
 
       <motion.div
         className="location-pill"
-        initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
+        initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
         animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
         transition={{ duration: 0.9, delay: 0.85, ease }}
       >
@@ -413,7 +417,7 @@ function AboutStats() {
         className="about-inner"
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.25 }}
+        viewport={sectionViewport}
         variants={stagger}
       >
         <motion.div className="about-intro" variants={reveal}>
@@ -519,7 +523,7 @@ function TechnologySection() {
         className="technology-inner"
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.22 }}
+        viewport={sectionViewport}
         variants={stagger}
       >
         <motion.div className="technology-image" variants={reveal}>
@@ -601,7 +605,7 @@ function ServicesSection() {
         className="services-inner"
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.18 }}
+        viewport={sectionViewport}
         variants={stagger}
       >
         <svg className="service-clip-defs" aria-hidden="true" focusable="false">
@@ -634,7 +638,7 @@ function ServicesSection() {
               variants={serviceCardReveal}
               initial="hidden"
               whileInView="show"
-              viewport={{ once: true, amount: 0.35 }}
+              viewport={sectionViewport}
             >
               {row.map((service) => (
                 <ServiceCard key={service.number} service={service} />
@@ -691,7 +695,7 @@ function DoctorSection() {
         className="specialist-inner"
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.18 }}
+        viewport={sectionViewport}
         variants={stagger}
       >
         <motion.div className="specialist-heading" variants={stagger}>
@@ -712,9 +716,9 @@ function DoctorSection() {
         <div className="specialist-layout">
           <motion.div
             className="specialist-photo"
-            initial={{ opacity: 0, scale: 1.05, filter: "blur(18px)" }}
+            initial={{ opacity: 0, scale: 1.05, filter: "blur(8px)" }}
             whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={sectionViewport}
             transition={{ duration: 1.1, ease }}
           >
             <motion.img
@@ -947,9 +951,9 @@ function BenefitItem({ item, index }) {
   return (
     <motion.div
       className="benefit-item"
-      initial={{ opacity: 0, y: 28, filter: "blur(10px)" }}
+      initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, amount: 0.4 }}
+      viewport={sectionViewport}
       transition={{
         duration: 0.75,
         delay: row * 0.18 + col * 0.1,
@@ -970,7 +974,7 @@ function BenefitsSection() {
         className="benefits-inner"
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.12 }}
+        viewport={sectionViewport}
         variants={stagger}
       >
         <motion.div className="benefits-heading" variants={stagger}>
@@ -1148,7 +1152,7 @@ function AwardsSection() {
         className="awards-inner"
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.05 }}
+        viewport={sectionViewport}
         variants={stagger}
       >
         {/* Heading */}
