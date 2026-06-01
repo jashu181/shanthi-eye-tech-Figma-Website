@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import Lenis from "lenis";
+import { useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -7,196 +6,24 @@ import {
   useScroll,
   useTransform
 } from "framer-motion";
-
-const ease = [0.22, 1, 0.36, 1];
-const sectionViewport = { once: true, amount: 0.18 };
-
-const reveal = {
-  hidden: { opacity: 0, y: 26, filter: "blur(6px)" },
-  show: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 1.05, ease }
-  }
-};
-
-const stagger = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.08
-    }
-  }
-};
-
-const serviceCardReveal = {
-  hidden: { opacity: 0, y: 40 },
-  show: (rowIndex) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.5,
-      delay: rowIndex * 0.2,
-      ease: "easeOut"
-    }
-  })
-};
-
-const docCardReveal = {
-  hidden: { opacity: 0, y: 26, filter: "blur(6px)" },
-  show: (i) => ({
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.9, delay: i * 0.1, ease }
-  })
-};
-
-const aboutLines = [
-  "At Shanti EyeTech Eye Care & Laser Hospital, we combine",
-  "world-class ophthalmic technology with a calm, patient-first",
-  "environment — comprehensive treatment under one roof."
-];
-
-const stats = [
-  {
-    value: "10k+ Patients",
-    description:
-      "Providing professional EYE care helping patients restore VISION and CONFIDENCE",
-    tone: "sky"
-  },
-  {
-    value: "20+ Experience",
-    description:
-      "Personalized therapy programs designed to improve health and support recovery.",
-    tone: "gold"
-  },
-  {
-    value: "8 Specialized Services",
-    description:
-      "Effective therapy treatments focused on helping patients achieve faster recovery.",
-    tone: "teal"
-  }
-];
-
-const aboutWordCount = aboutLines.reduce(
-  (total, line) => total + line.split(" ").length,
-  0
-);
-
-const technologyFeatures = [
-  {
-    title: "Advanced Diagnostics",
-    description: "Fast and precise eye assessments",
-    icon: "diagnostics"
-  },
-  {
-    title: "Precision Surgery",
-    description: "Modern equipment for improved outcomes",
-    icon: "surgery"
-  },
-  {
-    title: "Comfortable Experience",
-    description: "Support faster and safer recovery",
-    icon: "comfort"
-  }
-];
-
-const services = [
-  {
-    number: "01",
-    title: "Cataract Surgery",
-    description: "Advanced lens replacement procedures",
-    tags: ["Clear Vision", "Lens Replacement", "Vision Correction"]
-  },
-  {
-    number: "02",
-    title: "LASIK & Vision Correction",
-    description: "Reduce dependency on glasses",
-    tags: ["LASIK Surgery", "Fast Recovery", "Sharper Vision"]
-  },
-  {
-    number: "03",
-    title: "Glaucoma Care",
-    description: "Early detection and treatment",
-    tags: ["OCT Imaging", "Precision Eye Scanning", "Intraocular Pressure Monitoring"]
-  },
-  {
-    number: "04",
-    title: "Retina Services",
-    description: "Advanced retinal diagnosis and care",
-    tags: ["Specialized Care", "Personalized Treatment", "High Resolution Eye Imaging"]
-  },
-  {
-    number: "05",
-    title: "Pediatric Eye Care",
-    description: "Eye care for children",
-    tags: ["Early Detection", "Child Focused Care", "Little Eyes, Big Care"]
-  },
-  {
-    number: "06",
-    title: "Cornea Treatment",
-    description: "Treatment for corneal conditions",
-    tags: ["Corneal Infection Treatment", "Precision Diagnostics", "Restore Visual Clarity"]
-  }
-];
-
-const doctorCards = [
-  {
-    number: "01",
-    title: "Credentials",
-    type: "pills",
-    items: ["MBBS", "DOMS", "DNB", "FAECS"]
-  },
-  {
-    number: "02",
-    title: "Specialization",
-    type: "text",
-    body: "Cataract Surgery, Glaucoma Care, LASIK / Refractive, Phacoemulsification"
-  },
-  {
-    number: "03",
-    title: "Recognition",
-    type: "text",
-    body: "9+ National & international honours"
-  },
-  {
-    number: "03",
-    title: "Affiliations",
-    type: "text",
-    body: "11 Professional memberships"
-  }
-];
-
-function useLenis(disabled) {
-  useEffect(() => {
-    if (disabled) return undefined;
-
-    const lenis = new Lenis({
-      duration: 1.65,
-      easing: (t) => 1 - Math.pow(1 - t, 4),
-      smoothWheel: true,
-      syncTouch: false,
-      wheelMultiplier: 0.72,
-      touchMultiplier: 0.85
-    });
-
-    let frameId;
-    function raf(time) {
-      lenis.raf(time);
-      frameId = requestAnimationFrame(raf);
-    }
-
-    frameId = requestAnimationFrame(raf);
-
-    return () => {
-      cancelAnimationFrame(frameId);
-      lenis.destroy();
-    };
-  }, [disabled]);
-}
+import {
+  ease,
+  sectionViewport,
+  reveal,
+  stagger,
+  serviceCardReveal,
+  docCardReveal,
+  aboutLines,
+  stats,
+  aboutWordCount,
+  technologyFeatures,
+  services,
+  doctorCards,
+  benefits,
+  awards,
+  testimonials,
+  faqs
+} from "./homeData";
 
 function ArrowIcon() {
   return (
@@ -305,7 +132,7 @@ function HeroImage() {
 
       <div className="image-card">
         <motion.img
-          src="/Home_page.webp"
+          src="/assets/Home_page.webp"
           alt="Santhi Eye Tech reception"
           initial={{ scale: 1.08 }}
           animate={{ scale: 1.04 }}
@@ -366,7 +193,7 @@ function Hero() {
       >
         <motion.a className="brand-mark" href="#home" variants={reveal}>
           <span className="logo-crop">
-            <img src="/LOGO.jpeg" alt="Santhi Eye Tech logo" />
+            <img src="/assets/LOGO.jpeg" alt="Santhi Eye Tech logo" />
           </span>
         </motion.a>
 
@@ -558,7 +385,7 @@ function TechnologySection() {
       >
         <motion.div className="technology-image" variants={reveal}>
           <motion.img
-            src="/Beds.jpg"
+            src="/assets/Beds.jpg"
             alt="Advanced eye care technology room"
             style={reduceMotion ? undefined : { y: imageY, scale: imageScale }}
           />
@@ -752,7 +579,7 @@ function DoctorSection() {
             transition={{ duration: 1.1, ease }}
           >
             <motion.img
-              src="/1_doctor.png"
+              src="/assets/1_doctor.png"
               alt="Dr. Amit N. Solanki"
               style={reduceMotion ? undefined : { y: imageY }}
             />
@@ -786,49 +613,6 @@ function DoctorSection() {
     </section>
   );
 }
-
-const benefits = [
-  {
-    title: "Doctor-led eye care",
-    description: "Every consultation handled by an experienced ophthalmologist.",
-    icon: "doctor"
-  },
-  {
-    title: "Advanced technology",
-    description: "Modern diagnostic and surgical equipment.",
-    icon: "tech"
-  },
-  {
-    title: "Patient-friendly environment",
-    description: "A calm, peaceful, reassuring space.",
-    icon: "patient"
-  },
-  {
-    title: "Personalised Attention",
-    description: "Treatment plans tailored to your case.",
-    icon: "personalised"
-  },
-  {
-    title: "Affordable solutions",
-    description: "Quality care at accessible rates.",
-    icon: "affordable"
-  },
-  {
-    title: "Central Indore location",
-    description: "Easily reachable from across the city.",
-    icon: "location"
-  },
-  {
-    title: "Trained paramedical staff",
-    description: "Qualified team supporting every step.",
-    icon: "staff"
-  },
-  {
-    title: "Comprehensive services",
-    description: "All major eye care under one roof.",
-    icon: "comprehensive"
-  }
-];
 
 function BenefitIcon({ type }) {
   const icons = {
@@ -1033,71 +817,6 @@ function BenefitsSection() {
 /* ─────────────────────────────────────────────────────
    Awards & Recognition Timeline
 ───────────────────────────────────────────────────── */
-
-const awards = [
-  { id: 1, year: "2018", num: "1", side: "right", title: "Best Video Award",    description: "Shree Sadguru Seva Sansthan ‑ Managed Post LASIK Epithelial Ingrowth", accent: "cyan",  highlight: false },
-  { id: 2, year: "2017", num: "2", side: "left",  title: "Memorial Award",      description: "Dr. Ramesh Krishna Agarwal Award ‑ M.P.SOS Annual Conference, Gwalior",   accent: "green", highlight: false },
-  { id: 3, year: "2016", num: "3", side: "right", title: "Best Poster Award",   description: "M.P. State Ophthalmic Society Annual Conference, Bhopal",                 accent: "cyan",  highlight: false },
-  { id: 4, year: "2011", num: "4", side: "left",  title: "Best Surgical Video", description: "Small vs Large Rhexis for Endocapsular Phaco ‑ IDOS, Indore",             accent: "green", highlight: false },
-  { id: 5, year: "",     num: "",  side: "left",  title: "Best Glaucoma Paper", description: "Ophthalmology Tomorrow Annual Conference, IDOS, Indore",                  accent: "cyan",  highlight: true  },
-];
-
-const testimonials = [
-  {
-    id: 1,
-    title: "Excellent Professional Eye Care",
-    quote:
-      "The whole LASIK experience was extremely smooth. Dr. Solanki explained every step and the team made me feel completely at ease.",
-    name: "Priya S.",
-    details: "LASIK patient · Indore",
-    avatar: "/doctor.jpg"
-  },
-  {
-    id: 2,
-    title: "Trusted Recovery Support Experience",
-    quote:
-      "My father had his cataract operation here. The transparency in pricing and care, and the calm environment made all the difference.",
-    name: "Rakesh M.",
-    details: "Cataract surgery · Indore",
-    avatar: "/doctor.jpg"
-  },
-  {
-    id: 3,
-    title: "Highly Recommended Glaucoma Service",
-    quote:
-      "Long-term glaucoma care here has been outstanding. The doctor explains everything clearly and the staff is genuinely caring.",
-    name: "Anita V.",
-    details: "Glaucoma patient · Indore",
-    avatar: "/doctor.jpg"
-  }
-];
-
-const faqs = [
-  {
-    id: 1,
-    question: "How long does cataract surgery take?",
-    answer:
-      "Most cataract procedures take around 15 to 30 minutes, with total clinic time of about 2 to 3 hours including preparation and observation."
-  },
-  {
-    id: 2,
-    question: "Is LASIK painful?",
-    answer:
-      "LASIK is generally not painful. Numbing eye drops are used before treatment, and most patients feel only mild pressure for a few seconds during the procedure."
-  },
-  {
-    id: 3,
-    question: "When should I schedule an eye exam?",
-    answer:
-      "Adults should usually get a comprehensive eye exam every 1 to 2 years, or sooner if vision changes, diabetes, glaucoma risk, or persistent eye discomfort occurs."
-  },
-  {
-    id: 4,
-    question: "Do I need follow-up appointments?",
-    answer:
-      "Yes, follow-up visits are important after treatments like LASIK or cataract surgery. They help us monitor healing, adjust medications, and protect long-term vision outcomes."
-  }
-];
 
 function TimelineRow({ item, index }) {
   const cardOnRight = item.side === "right";   // true → card right, year left
@@ -1435,7 +1154,7 @@ function CTABannerSection() {
     <section className="cta-banner-section" id="cta-banner">
       <div className="cta-banner-shell">
         <motion.img
-          src="/1_doctor.png"
+          src="/assets/1_doctor.png"
           alt="Eye specialist"
           className="cta-banner-photo cta-banner-photo--left"
           initial={{ opacity: 0, x: -60 }}
@@ -1445,7 +1164,7 @@ function CTABannerSection() {
         />
 
         <motion.img
-          src="/1_doctor.png"
+          src="/assets/1_doctor.png"
           alt="Patient consultation"
           className="cta-banner-photo cta-banner-photo--right"
           initial={{ opacity: 0, x: 60 }}
@@ -1584,7 +1303,7 @@ function FooterSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
         >
-          <img src="/LOGO.jpeg" alt="Shanti EyeTech logo" className="footer-logo" />
+          <img src="/assets/LOGO.jpeg" alt="Shanti EyeTech logo" className="footer-logo" />
           <div className="footer-socials">
             {[
               { label: "Facebook", symbol: "f" },
@@ -1643,12 +1362,9 @@ function FooterSection() {
   );
 }
 
-export default function App() {
-  const reduceMotion = useReducedMotion();
-  useLenis(reduceMotion);
-
+export default function HomePageComponent() {
   return (
-    <main>
+    <>
       <Hero />
       <AboutStats />
       <TechnologySection />
@@ -1660,6 +1376,6 @@ export default function App() {
       <FAQSection />
       <CTABannerSection />
       <FooterSection />
-    </main>
+    </>
   );
 }
