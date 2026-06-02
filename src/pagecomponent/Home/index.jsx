@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
+  useInView,
   useReducedMotion,
   useScroll,
   useTransform
@@ -33,15 +34,110 @@ function ArrowIcon() {
   );
 }
 
+const technologyViewport = { once: true, amount: 0.25 };
+
+const containerVariant = {
+  hidden: {},
+  show: {
+    transition: {
+      when: "beforeChildren"
+    }
+  }
+};
+
+const textVariant = {
+  hidden: ({ y = 40, scale = 1 } = {}) => ({
+    opacity: 0,
+    y,
+    scale
+  }),
+  show: ({ delay = 0, duration = 0.7 } = {}) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration,
+      delay,
+      ease
+    }
+  })
+};
+
+const imageVariant = {
+  hidden: {
+    opacity: 0,
+    x: -60,
+    scale: 0.96,
+    clipPath: "inset(0 100% 0 0 round 20px)"
+  },
+  show: {
+    opacity: 1,
+    x: 0,
+    scale: 1,
+    clipPath: "inset(0 0% 0 0 round 20px)",
+    transition: {
+      duration: 0.9,
+      delay: 0.96,
+      ease
+    }
+  }
+};
+
+const cardContainerVariant = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 1.32
+    }
+  }
+};
+
+const cardVariant = {
+  hidden: {
+    opacity: 0,
+    y: 50,
+    scale: 0.94
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.72,
+      ease,
+      when: "beforeChildren",
+      delayChildren: 0.14
+    }
+  }
+};
+
+const iconVariant = {
+  hidden: {
+    opacity: 0,
+    scale: 0.7,
+    rotate: -8
+  },
+  show: {
+    opacity: 1,
+    scale: 1,
+    rotate: 0,
+    transition: {
+      duration: 0.46,
+      ease
+    }
+  }
+};
+
 function CTAButton({ children, variant = "primary" }) {
   return (
     <motion.a
       className={`cta-button cta-button--${variant}`}
       href="#contact"
-      whileHover={{ y: -3 }}
       whileTap={{ scale: 0.98 }}
     >
-      {children}
+      <span className="cta-button-fill" aria-hidden="true" />
+      <span className="cta-button-text">{children}</span>
       <ArrowIcon />
     </motion.a>
   );
@@ -349,13 +445,13 @@ function TechnologyCard({ title, description, icon }) {
   return (
     <motion.article
       className="tech-card"
-      variants={reveal}
+      variants={cardVariant}
       whileHover={{ y: -7 }}
       transition={{ duration: 0.75, ease }}
     >
-      <span className="tech-icon">
+      <motion.span className="tech-icon" variants={iconVariant}>
         <ServiceIcon type={icon} />
-      </span>
+      </motion.span>
       <div>
         <h3>{title}</h3>
         <p>{description}</p>
@@ -367,6 +463,7 @@ function TechnologyCard({ title, description, icon }) {
 function TechnologySection() {
   const sectionRef = useRef(null);
   const reduceMotion = useReducedMotion();
+  const isInView = useInView(sectionRef, technologyViewport);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"]
@@ -379,11 +476,15 @@ function TechnologySection() {
       <motion.div
         className="technology-inner"
         initial="hidden"
-        whileInView="show"
-        viewport={sectionViewport}
-        variants={stagger}
+        animate={isInView ? "show" : "hidden"}
+        variants={containerVariant}
       >
-        <motion.div className="technology-image" variants={reveal}>
+        <motion.div
+          className="technology-image"
+          variants={imageVariant}
+          whileHover={reduceMotion ? undefined : { scale: 1.02 }}
+          transition={{ duration: 0.7, ease }}
+        >
           <motion.img
             src="/assets/Beds.jpg"
             alt="Advanced eye care technology room"
@@ -392,19 +493,20 @@ function TechnologySection() {
         </motion.div>
 
         <div className="technology-content">
-          <motion.div className="technology-copy" variants={stagger}>
-            <motion.h2 variants={reveal}>
+          <motion.div className="technology-copy" variants={containerVariant}>
+            <motion.h2 variants={textVariant} custom={{ y: 40, delay: 0, duration: 0.7 }}>
               Expert Eye Care with Advanced Technology
             </motion.h2>
-            <motion.p variants={reveal}>
+            <motion.p variants={textVariant} custom={{ y: 30, delay: 0.2, duration: 0.66 }}>
               Modern diagnostic and surgical systems improve accuracy, treatment
               quality, and patient experience.
             </motion.p>
             <motion.a
               className="learn-button"
               href="#contact"
-              variants={reveal}
-              whileHover={{ y: -3 }}
+              variants={textVariant}
+              custom={{ y: 25, scale: 0.96, delay: 0.42, duration: 0.62 }}
+              whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
             >
               <span className="learn-button-fill" />
@@ -415,7 +517,7 @@ function TechnologySection() {
             </motion.a>
           </motion.div>
 
-          <motion.div className="technology-cards" variants={stagger}>
+          <motion.div className="technology-cards" variants={cardContainerVariant}>
             {technologyFeatures.map((feature) => (
               <TechnologyCard
                 key={feature.title}
@@ -614,149 +716,17 @@ function DoctorSection() {
   );
 }
 
-function BenefitIcon({ type }) {
-  const icons = {
-    /* Person silhouette + small cross badge bottom-right */
-    doctor: (
-      <svg viewBox="0 0 64 64" fill="currentColor" aria-hidden="true">
-        <circle cx="32" cy="16" r="10" />
-        <path d="M10 54c0-12.15 9.85-22 22-22s22 9.85 22 22H10z" />
-        {/* cross badge */}
-        <circle cx="48" cy="46" r="9" fill="currentColor" />
-        <rect x="45" y="40" width="6" height="12" rx="2" fill="white" />
-        <rect x="42" y="43" width="12" height="6" rx="2" fill="white" />
-      </svg>
-    ),
-    /* Index finger pointing up with 3 curved signal arcs radiating from tip */
-    tech: (
-      <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-        {/* hand / finger */}
-        <path
-          d="M28 52V28a4 4 0 0 1 8 0v12l4-2a3 3 0 0 1 4 2.8V44c0 4.4-3.6 8-8 8H28z"
-          fill="currentColor"
-        />
-        <path
-          d="M20 38v-8a4 4 0 0 1 8 0"
-          stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" fill="none"
-        />
-        {/* signal arcs above finger tip */}
-        <path d="M32 22 Q32 18 36 16" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" fill="none" />
-        <path d="M32 22 Q32 14 40 11" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" fill="none" />
-        <path d="M32 22 Q32 10 44 6"  stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" fill="none" />
-        {/* left arcs mirrored */}
-        <path d="M32 22 Q32 18 28 16" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" fill="none" />
-        <path d="M32 22 Q32 14 24 11" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" fill="none" />
-        <path d="M32 22 Q32 10 20 6"  stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" fill="none" />
-        {/* dot at fingertip */}
-        <circle cx="32" cy="22" r="2.5" fill="currentColor" />
-      </svg>
-    ),
-    /* 3 person silhouettes side-by-side with heart+pulse above the center one */
-    patient: (
-      <svg viewBox="0 0 64 64" fill="currentColor" aria-hidden="true">
-        {/* left person */}
-        <circle cx="14" cy="20" r="7" />
-        <path d="M2 48c0-6.627 5.373-12 12-12h6v12H2z" />
-        {/* right person */}
-        <circle cx="50" cy="20" r="7" />
-        <path d="M44 36h6c6.627 0 12 5.373 12 12v0H44V36z" />
-        {/* center person */}
-        <circle cx="32" cy="22" r="8" />
-        <path d="M18 48c0-7.732 6.268-14 14-14s14 6.268 14 14H18z" />
-        {/* heart above center */}
-        <path
-          d="M32 14c0 0-1.5-4-5-4a4 4 0 0 0-4 4c0 4 9 10 9 10s9-6 9-10a4 4 0 0 0-4-4c-3.5 0-5 4-5 4z"
-          fill="currentColor"
-        />
-      </svg>
-    ),
-    /* Person silhouette + large magnifying glass overlapping right side */
-    personalised: (
-      <svg viewBox="0 0 64 64" fill="currentColor" aria-hidden="true">
-        {/* person */}
-        <circle cx="22" cy="16" r="9" />
-        <path d="M6 48c0-8.837 7.163-16 16-16h8v16H6z" />
-        {/* magnifying glass */}
-        <circle cx="44" cy="34" r="13" fill="none" stroke="currentColor" strokeWidth="5" />
-        <circle cx="44" cy="34" r="6" />
-        <line x1="53" y1="43" x2="61" y2="51" stroke="currentColor" strokeWidth="5" strokeLinecap="round" />
-      </svg>
-    ),
-    /* Lightbulb body with filament + small checkmark badge bottom-right */
-    affordable: (
-      <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-        {/* bulb glass */}
-        <path
-          d="M32 6a16 16 0 0 1 10 28.4V42a2 2 0 0 1-2 2H24a2 2 0 0 1-2-2v-7.6A16 16 0 0 1 32 6z"
-          fill="currentColor"
-        />
-        {/* base segments */}
-        <rect x="24" y="46" width="16" height="3" rx="1.5" fill="currentColor" />
-        <rect x="26" y="51" width="12" height="3" rx="1.5" fill="currentColor" />
-        {/* rays */}
-        <line x1="32" y1="2" x2="32" y2="0"  stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-        <line x1="50" y1="10" x2="52" y2="8"  stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-        <line x1="14" y1="10" x2="12" y2="8"  stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-        <line x1="56" y1="26" x2="58" y2="26" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-        <line x1="8"  y1="26" x2="6"  y2="26" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-        {/* checkmark badge */}
-        <circle cx="48" cy="48" r="10" fill="currentColor" />
-        <path d="M43 48l4 4 7-7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-      </svg>
-    ),
-    /* Map-pin shape with hole, plus 2 concentric ellipse ripples below */
-    location: (
-      <svg viewBox="0 0 64 64" fill="currentColor" aria-hidden="true">
-        {/* pin */}
-        <path d="M32 4C22.06 4 14 12.06 14 22c0 13.25 18 36 18 36s18-22.75 18-36C50 12.06 41.94 4 32 4z" />
-        {/* inner hole */}
-        <circle cx="32" cy="22" r="6" fill="white" />
-        {/* ripple rings below pin */}
-        <ellipse cx="32" cy="56" rx="14" ry="4" fill="none" stroke="currentColor" strokeWidth="2.5" />
-        <ellipse cx="32" cy="56" rx="8"  ry="2.5" fill="currentColor" opacity="0.35" />
-      </svg>
-    ),
-    /* Person with stethoscope around neck + small medical bag lower-right */
-    staff: (
-      <svg viewBox="0 0 64 64" fill="currentColor" aria-hidden="true">
-        {/* head */}
-        <circle cx="32" cy="14" r="10" />
-        {/* body */}
-        <path d="M14 52c0-9.94 8.06-18 18-18s18 8.06 18 18H14z" />
-        {/* stethoscope arc over shoulders */}
-        <path
-          d="M22 34 Q22 44 28 44 Q34 44 34 38"
-          fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round"
-        />
-        <circle cx="34" cy="38" r="3" fill="white" />
-        {/* medical bag badge */}
-        <rect x="40" y="42" width="16" height="14" rx="3" fill="currentColor" />
-        <rect x="44" y="39" width="8" height="5" rx="2" fill="currentColor" />
-        <rect x="43" y="46" width="10" height="2.5" rx="1" fill="white" />
-        <rect x="47" y="42" width="2.5" height="10" rx="1" fill="white" />
-      </svg>
-    ),
-    /* Person head with large eye inside + small magnifier overlapping right */
-    comprehensive: (
-      <svg viewBox="0 0 64 64" fill="currentColor" aria-hidden="true">
-        {/* person silhouette */}
-        <circle cx="28" cy="16" r="10" />
-        <path d="M10 50c0-9.94 8.06-18 18-18h6v18H10z" />
-        {/* magnifying glass with eye inside */}
-        <circle cx="44" cy="36" r="14" fill="none" stroke="currentColor" strokeWidth="5" />
-        {/* eye shape inside lens */}
-        <path
-          d="M34 36c0 0 4-6 10-6s10 6 10 6-4 6-10 6-10-6-10-6z"
-          fill="currentColor"
-          stroke="none"
-        />
-        <circle cx="44" cy="36" r="3" fill="white" />
-        {/* handle */}
-        <line x1="53" y1="45" x2="61" y2="53" stroke="currentColor" strokeWidth="5" strokeLinecap="round" />
-      </svg>
-    )
-  };
-  return <span className="benefit-icon">{icons[type]}</span>;
+function BenefitIcon({ index }) {
+  return (
+    <span className="benefit-icon" aria-hidden="true">
+      <img
+        src={`/assets/why-patients/${index + 1}.png`}
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
+    </span>
+  );
 }
 
 function BenefitItem({ item, index }) {
@@ -774,7 +744,7 @@ function BenefitItem({ item, index }) {
         ease
       }}
     >
-      <BenefitIcon type={item.icon} />
+      <BenefitIcon index={index} />
       <h3>{item.title}</h3>
       <p>{item.description}</p>
     </motion.div>
@@ -1014,42 +984,12 @@ function TestimonialsSection() {
         <motion.a
           href="#contact"
           className="testimonials-view-all"
-          initial="rest"
-          animate="rest"
-          whileHover="hover"
           whileTap={{ scale: 0.98 }}
-          variants={{
-            rest: {
-              backgroundColor: "rgba(255,255,255,0)",
-              color: "#171311",
-              borderColor: "rgba(36,197,232,0.78)"
-            },
-            hover: {
-              backgroundColor: "#24c5e8",
-              color: "#ffffff",
-              borderColor: "#24c5e8"
-            }
-          }}
-          transition={{ duration: 0.32, ease: "easeOut" }}
         >
-          <span>View all</span>
+          <span className="testimonials-view-all-fill" aria-hidden="true" />
+          <span className="testimonials-view-all-text">View all</span>
           <motion.span
             className="testimonials-view-all-arrow"
-            variants={{
-              rest: {
-                x: 0,
-                backgroundColor: "rgba(36,197,232,0.08)",
-                borderColor: "rgba(36,197,232,0.45)",
-                color: "#0d93b2"
-              },
-              hover: {
-                x: 5,
-                backgroundColor: "rgba(255,255,255,0.22)",
-                borderColor: "rgba(255,255,255,0.64)",
-                color: "#ffffff"
-              }
-            }}
-            transition={{ duration: 0.28, ease: "easeOut" }}
             aria-hidden="true"
           >
             →
@@ -1204,19 +1144,11 @@ function CTABannerSection() {
               href="#contact"
               className="cta-banner-button"
               whileTap={{ scale: 0.98 }}
-              initial="rest"
-              animate="rest"
-              whileHover="hover"
-              variants={{
-                rest: { scale: 1 },
-                hover: { scale: 1.04 }
-              }}
             >
-              <span>Book a Consultation</span>
+              <span className="cta-banner-button-fill" aria-hidden="true" />
+              <span className="cta-banner-button-text">Book a Consultation</span>
               <motion.span
                 className="cta-banner-button-arrow"
-                variants={{ rest: { x: 0 }, hover: { x: 4 } }}
-                transition={{ duration: 0.24, ease: "easeOut" }}
                 aria-hidden="true"
               >
                 →
@@ -1229,135 +1161,220 @@ function CTABannerSection() {
   );
 }
 
-const WaveLine = () => (
-  <svg
-    className="footer-wave"
-    viewBox="0 0 1440 16"
-    preserveAspectRatio="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
-  >
-    <path
-      d="M0,8 C300,8 400,0 720,0 C1040,0 1140,8 1440,8"
-      fill="none"
-      stroke="#8ab5a8"
-      strokeWidth="1.5"
-    />
-  </svg>
-);
+const footerEase = [0.22, 1, 0.36, 1];
+const footerViewport = { once: true, amount: 0.2 };
+
+const footerContainerVariant = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.12
+    }
+  }
+};
+
+const footerRevealVariant = {
+  hidden: { opacity: 0, y: 28 },
+  show: ({ delay = 0 } = {}) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, delay, ease: footerEase }
+  })
+};
+
+const footerLogoVariant = {
+  hidden: { opacity: 0, scale: 0.9 },
+  show: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.7, delay: 0.36, ease: footerEase }
+  }
+};
+
+const footerSocialsVariant = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.5
+    }
+  }
+};
+
+const footerSocialVariant = {
+  hidden: { opacity: 0, y: 18, scale: 0.92 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.55, ease: footerEase }
+  }
+};
+
+function FooterCurveLine({ position }) {
+  const isBottom = position === "bottom";
+
+  return (
+    <motion.svg
+      className={`footer-curve footer-curve--${position}`}
+      viewBox="0 0 1600 92"
+      preserveAspectRatio="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      variants={footerRevealVariant}
+      custom={{ delay: isBottom ? 1.02 : 0 }}
+    >
+      <path
+        d={
+          isBottom
+            ? "M0 58H458C508 58 532 22 584 22H1016C1068 22 1092 58 1150 58H1600"
+            : "M0 36H458C508 36 532 70 584 70H1016C1068 70 1092 36 1150 36H1600"
+        }
+      />
+    </motion.svg>
+  );
+}
+
+function FooterSocialIcon({ label }) {
+  if (label === "Facebook") {
+    return <span aria-hidden="true">f</span>;
+  }
+
+  if (label === "X / Twitter") {
+    return <span aria-hidden="true">X</span>;
+  }
+
+  if (label === "Instagram") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="5" y="5" width="14" height="14" rx="4" />
+        <circle cx="12" cy="12" r="3.2" />
+        <circle cx="16.5" cy="7.5" r="0.8" />
+      </svg>
+    );
+  }
+
+  return <span aria-hidden="true">in</span>;
+}
 
 function FooterSection() {
+  const mainPages = [
+    { label: "Home", href: "#home" },
+    { label: "About", href: "#about" },
+    { label: "Services", href: "#services" },
+    { label: "Blog", href: "#blog" }
+  ];
+  const supportLinks = [
+    { label: "FAQ", href: "#faq" },
+    { label: "Privacy Policy", href: "#privacy" }
+  ];
+  const socials = [
+    { label: "Facebook", href: "https://facebook.com" },
+    { label: "X / Twitter", href: "https://x.com/" },
+    { label: "Instagram", href: "https://instagram.com" },
+    { label: "LinkedIn", href: "https://linkedin.com" }
+  ];
+
   return (
     <footer className="footer-section">
-      {/* top wave */}
       <motion.div
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        style={{ transformOrigin: "left" }}
+        className="footer-shell"
+        initial="hidden"
+        whileInView="show"
+        viewport={footerViewport}
+        variants={footerContainerVariant}
       >
-        <WaveLine />
+        <img
+          className="footer-bg-image"
+          src="https://framerusercontent.com/images/Kw7qYWRE5oJS1vo7LgFTnJmSPZI.png?width=4800&height=2644"
+          alt=""
+          decoding="async"
+          loading="lazy"
+          aria-hidden="true"
+        />
+        <span className="footer-bg-overlay" aria-hidden="true" />
+
+        <FooterCurveLine position="top" />
+
+        <div className="footer-content">
+          <motion.div className="footer-left" variants={footerContainerVariant}>
+            <motion.p
+              className="footer-description"
+              variants={footerRevealVariant}
+              custom={{ delay: 0.12 }}
+            >
+              Where peace meets world-class technology - comprehensive eye care, advanced cataract, glaucoma and refractive surgery led by Dr. Amit N. Solanki in the heart of Indore.
+            </motion.p>
+
+            <motion.div
+              className="footer-pages"
+              variants={footerRevealVariant}
+              custom={{ delay: 0.24 }}
+            >
+              <h3>Main Pages</h3>
+              <nav aria-label="Footer main pages">
+                {mainPages.map((link) => (
+                  <a key={link.label} href={link.href}>{link.label}</a>
+                ))}
+              </nav>
+            </motion.div>
+          </motion.div>
+
+          <motion.div className="footer-center" variants={footerContainerVariant}>
+            <motion.img
+              src="/assets/LOGO.jpeg"
+              alt="Shanti EyeTech logo"
+              className="footer-logo"
+              variants={footerLogoVariant}
+            />
+            <motion.div className="footer-socials" variants={footerSocialsVariant}>
+              {socials.map((social) => (
+                <motion.a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-social-icon"
+                  aria-label={social.label}
+                  variants={footerSocialVariant}
+                  whileHover={{ y: -4 }}
+                  whileTap={{ scale: 0.96 }}
+                >
+                  <FooterSocialIcon label={social.label} />
+                </motion.a>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          <motion.div className="footer-right" variants={footerContainerVariant}>
+            <motion.div className="footer-support" variants={footerRevealVariant} custom={{ delay: 0.78 }}>
+              <h3>Support</h3>
+              <nav aria-label="Footer support links">
+                {supportLinks.map((link) => (
+                  <a key={link.label} href={link.href}>{link.label}</a>
+                ))}
+              </nav>
+            </motion.div>
+
+            <motion.div className="footer-visit" variants={footerRevealVariant} custom={{ delay: 0.9 }}>
+              <h3>Visit us</h3>
+              <address>
+                Shekhar Central, M1 &amp; M2,<br />
+                Palasia Square, Manorama Ganj,<br />
+                Indore, MP 452001
+              </address>
+              <p>9179191939 · 0731-4291939</p>
+              <p>info@shantieyetech.com</p>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        <FooterCurveLine position="bottom" />
+
+        <motion.p className="footer-copy" variants={footerRevealVariant} custom={{ delay: 1.14 }}>
+          © 2026 Shanti EyeTech Eye Care &amp; Laser Hospital · All rights reserved
+        </motion.p>
       </motion.div>
-
-      {/* 4-column grid */}
-      <div className="footer-grid">
-        {/* Col 1 — Brand Bio */}
-        <motion.div
-          className="footer-col footer-col--bio"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-        >
-          <p>
-            Where peace meets world-class technology —
-            comprehensive eye care, advanced cataract,
-            glaucoma and refractive surgery led by Dr. Amit N.
-            Solanki in the heart of Indore.
-          </p>
-        </motion.div>
-
-        {/* Col 2 — Main Pages */}
-        <motion.div
-          className="footer-col"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
-        >
-          <h3>Main Pages</h3>
-          <nav>
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#services">Services</a>
-            <a href="#blog">Blog</a>
-          </nav>
-        </motion.div>
-
-        {/* Col 3 — Logo + Social */}
-        <motion.div
-          className="footer-col footer-col--center"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-        >
-          <img src="/assets/LOGO.jpeg" alt="Shanti EyeTech logo" className="footer-logo" />
-          <div className="footer-socials">
-            {[
-              { label: "Facebook", symbol: "f" },
-              { label: "Twitter", symbol: "𝕏" },
-              { label: "Instagram", symbol: "◎" },
-              { label: "LinkedIn", symbol: "in" },
-            ].map((s) => (
-              <motion.a
-                key={s.label}
-                href="#"
-                className="footer-social-icon"
-                aria-label={s.label}
-                whileHover={{ scale: 1.12 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                {s.symbol}
-              </motion.a>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Col 4 — Support + Visit Us */}
-        <motion.div
-          className="footer-col"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
-        >
-          <h3>Support</h3>
-          <nav>
-            <a href="#faq">FAQ</a>
-            <a href="#privacy">Privacy Policy</a>
-          </nav>
-
-          <h3 className="footer-h3--spaced">Visit us</h3>
-          <address>
-            Shekhar Central, M1 &amp; M2,<br />
-            Palasia Square, Manorama Ganj,<br />
-            Indore, MP 452001
-            <br /><br />
-            9179191939 · 0731-4291939<br />
-            info@shantieyetech.com
-          </address>
-        </motion.div>
-      </div>
-
-      {/* bottom wave above copyright */}
-      <WaveLine />
-
-      {/* copyright */}
-      <div className="footer-copy">
-        <p>© 2026 Shanti EyeTech Eye Care &amp; Laser Hospital · All rights reserved</p>
-      </div>
     </footer>
   );
 }
