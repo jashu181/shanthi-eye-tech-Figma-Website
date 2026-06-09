@@ -9,12 +9,12 @@ export default function LenisProvider({ children }) {
     if (reduceMotion) return undefined;
 
     const lenis = new Lenis({
-      duration: 1.65,
+      duration: 0.95,
       easing: (t) => 1 - Math.pow(1 - t, 4),
       smoothWheel: true,
       syncTouch: false,
-      wheelMultiplier: 0.72,
-      touchMultiplier: 0.85,
+      wheelMultiplier: 0.92,
+      touchMultiplier: 0.95,
     });
 
     let frameId;

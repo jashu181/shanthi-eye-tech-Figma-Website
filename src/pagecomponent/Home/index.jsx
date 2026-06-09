@@ -196,9 +196,9 @@ function FeaturePill({ className, icon, label, delay }) {
   return (
     <motion.div
       className={`feature-pill ${className}`}
-      initial={{ opacity: 0, filter: "blur(6px)" }}
-      animate={{ opacity: 1, filter: "blur(0px)" }}
-      transition={{ duration: 0.9, delay, ease }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6, delay, ease }}
     >
       <span className="feature-pill-float">
         <span className="feature-icon">
@@ -214,9 +214,9 @@ function HeroImage() {
   return (
     <motion.div
       className="hero-media"
-      initial={{ opacity: 0, x: 38, filter: "blur(8px)" }}
-      animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-      transition={{ duration: 1, ease, delay: 0.12 }}
+      initial={{ opacity: 0, x: 32 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.72, ease, delay: 0.1 }}
     >
       <svg className="clip-defs" aria-hidden="true" focusable="false">
         <defs>
@@ -232,7 +232,7 @@ function HeroImage() {
           alt="Santhi Eye Tech reception"
           initial={{ scale: 1.08 }}
           animate={{ scale: 1.04 }}
-          transition={{ duration: 1.2, ease }}
+          transition={{ duration: 0.75, ease }}
         />
         <div className="image-overlay" />
       </div>
@@ -266,9 +266,9 @@ function HeroImage() {
       <div className="location-pill">
         <motion.span
           className="location-pill-inner"
-          initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 0.9, delay: 0.85, ease }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.62, delay: 0.65, ease }}
         >
           <span />
           INDORE - SINCE 2003
@@ -464,13 +464,6 @@ function TechnologySection() {
   const sectionRef = useRef(null);
   const reduceMotion = useReducedMotion();
   const isInView = useInView(sectionRef, technologyViewport);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  });
-  const imageY = useTransform(scrollYProgress, [0, 1], ["-18px", "18px"]);
-  const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.04, 1, 1.04]);
-
   return (
     <section className="technology-section" ref={sectionRef}>
       <motion.div
@@ -488,7 +481,6 @@ function TechnologySection() {
           <motion.img
             src="/assets/Beds.jpg"
             alt="Advanced eye care technology room"
-            style={reduceMotion ? undefined : { y: imageY, scale: imageScale }}
           />
         </motion.div>
 
@@ -642,11 +634,6 @@ function DoctorInfoCard({ card, index }) {
 function DoctorSection() {
   const sectionRef = useRef(null);
   const reduceMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  });
-  const imageY = useTransform(scrollYProgress, [0, 1], ["-14px", "14px"]);
 
   return (
     <section className="specialist-section" id="specialist" ref={sectionRef}>
@@ -675,22 +662,21 @@ function DoctorSection() {
         <div className="specialist-layout">
           <motion.div
             className="specialist-photo"
-            initial={{ opacity: 0, scale: 1.05, filter: "blur(8px)" }}
-            whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            initial={{ opacity: 0, scale: 1.03 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={sectionViewport}
-            transition={{ duration: 1.1, ease }}
+            transition={{ duration: 0.72, ease }}
           >
             <motion.img
               src="/assets/1_doctor.png"
               alt="Dr. Amit N. Solanki"
-              style={reduceMotion ? undefined : { y: imageY }}
             />
             <motion.div
               className="specialist-name-overlay"
               initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.32, ease }}
+              transition={{ duration: 0.62, delay: 0.24, ease }}
             >
               <span className="specialist-doctor-name">Dr. Amit N. Solanki</span>
               <span className="specialist-doctor-role">
@@ -735,11 +721,11 @@ function BenefitItem({ item, index }) {
   return (
     <motion.div
       className="benefit-item"
-      initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={sectionViewport}
       transition={{
-        duration: 0.75,
+        duration: 0.62,
         delay: row * 0.18 + col * 0.1,
         ease
       }}
@@ -797,10 +783,10 @@ function TimelineRow({ item, index }) {
   const yearEl = item.year && (
     <motion.div
       className={`tl-year tl-year--${item.accent}`}
-      initial={{ opacity: 0, x: cardOnRight ? -60 : 60, filter: "blur(8px)" }}
-      whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, x: cardOnRight ? -44 : 44 }}
+      whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.6, delay, ease: "easeOut" }}
+      transition={{ duration: 0.55, delay, ease: "easeOut" }}
     >
       {item.year}
     </motion.div>
@@ -810,10 +796,10 @@ function TimelineRow({ item, index }) {
   const cardEl = (
     <motion.div
       className={`award-card${item.highlight ? " award-card--highlight" : ""}`}
-      initial={{ opacity: 0, x: isTail ? -40 : cardOnRight ? 60 : -60, filter: "blur(8px)" }}
-      whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, x: isTail ? -32 : cardOnRight ? 44 : -44 }}
+      whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.6, delay, ease: "easeOut" }}
+      transition={{ duration: 0.55, delay, ease: "easeOut" }}
       whileHover={{ y: -4 }}
     >
       <h3>{item.title}</h3>
@@ -1100,7 +1086,7 @@ function CTABannerSection() {
           initial={{ opacity: 0, x: -60 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
+          transition={{ duration: 0.58, ease: "easeOut" }}
         />
 
         <motion.img
@@ -1128,7 +1114,7 @@ function CTABannerSection() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+            transition={{ duration: 0.62, delay: 0.14, ease: "easeOut" }}
           >
             <span className="cta-banner-heading-soft">Start Your </span>
             <span className="cta-banner-heading-accent">Vision Journey</span>
@@ -1138,7 +1124,7 @@ function CTABannerSection() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+            transition={{ duration: 0.55, delay: 0.28, ease: "easeOut" }}
           >
             <motion.a
               href="#contact"

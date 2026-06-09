@@ -234,8 +234,7 @@ main {
     right 0.75s var(--ease),
     border-radius 0.75s var(--ease),
     background 0.75s var(--ease);
-  will-change: width, height, right, border-radius;
-}
+  }
 
 .cta-button--secondary .cta-button-fill {
   background: rgba(36, 197, 232, 0.94);
@@ -392,8 +391,7 @@ main {
   background: transparent;
   white-space: nowrap;
   animation: cardFloatY 5.6s ease-in-out infinite;
-  will-change: transform;
-}
+  }
 
 .feature-pill-float {
   display: flex;
@@ -504,8 +502,7 @@ main {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  will-change: transform;
-}
+  }
 
 .location-pill-inner > span {
   position: relative;
@@ -637,9 +634,9 @@ main {
 }
 
 .about-text {
-  max-width: 1540px;
+  max-width: 100%;
   margin: 0;
-  font-size: clamp(42px, 3vw, 56px);
+  font-size: clamp(32px, 2.15vw, 42px);
   line-height: 1.12;
   letter-spacing: 0;
   font-weight: 400;
@@ -652,8 +649,7 @@ main {
 
 .about-word {
   display: inline;
-  will-change: color;
-}
+  }
 
 .stats-grid {
   display: grid;
@@ -702,8 +698,7 @@ main {
   transform: scale(1) translateZ(0);
   transform-origin: center;
   transition: transform 0.75s var(--ease), box-shadow 0.75s var(--ease);
-  will-change: transform;
-}
+  }
 
 .stat-card:hover .stat-dot {
   transform: scale(82) translateZ(0);
@@ -796,8 +791,7 @@ main {
   height: 112%;
   object-fit: cover;
   object-position: 50% 50%;
-  will-change: transform;
-}
+  }
 
 .technology-content {
   min-height: 566px;
@@ -862,8 +856,7 @@ main {
     height 0.75s var(--ease),
     right 0.75s var(--ease),
     border-radius 0.75s var(--ease);
-  will-change: width, height, right, border-radius;
-}
+  }
 
 .learn-button:hover .learn-button-fill {
   right: 0;
@@ -1078,8 +1071,7 @@ main {
   opacity: 0;
   clip-path: circle(23px at calc(100% - 62px) 0);
   transition: clip-path 1.05s var(--ease), opacity 1.05s var(--ease);
-  will-change: clip-path, opacity;
-}
+  }
 
 .service-card:hover .service-glow {
   opacity: 1;
@@ -1257,8 +1249,7 @@ main {
   height: 112%;
   object-fit: cover;
   object-position: 50% 12%;
-  will-change: transform;
-}
+  }
 
 .specialist-name-overlay {
   position: absolute;
@@ -1374,8 +1365,7 @@ main {
   opacity: 0;
   clip-path: circle(22px at calc(100% - 32px) 26px);
   transition: clip-path 0.95s var(--ease), opacity 0.95s var(--ease);
-  will-change: clip-path, opacity;
-}
+  }
 
 .doc-card:hover .doc-glow {
   opacity: 1;
@@ -2269,8 +2259,7 @@ main {
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.03em;
-  will-change: transform, opacity;
-}
+  }
 
 .tl-year--cyan {
   background: linear-gradient(135deg, #24c5e8 0%, #0ea5c9 100%);
@@ -2298,8 +2287,7 @@ main {
   font-size: 20px;
   font-weight: 700;
   line-height: 1;
-  will-change: transform, opacity;
-  transition: box-shadow 0.5s var(--ease);
+    transition: box-shadow 0.5s var(--ease);
   position: relative;
   z-index: 2;
 }
@@ -2322,8 +2310,7 @@ main {
   padding: 28px 30px 30px;
   box-shadow: 0 18px 52px rgba(26, 20, 14, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.7);
-  will-change: transform, opacity;
-  transition: box-shadow 0.55s var(--ease);
+    transition: box-shadow 0.55s var(--ease);
 }
 
 .award-card:hover {
@@ -2624,8 +2611,7 @@ main {
     height 0.75s var(--ease),
     right 0.75s var(--ease),
     border-radius 0.75s var(--ease);
-  will-change: width, height, right, border-radius;
-}
+  }
 
 .testimonials-view-all:hover {
   border-color: var(--aqua);
@@ -2957,8 +2943,8 @@ main {
   border-radius: 24px;
   overflow: hidden;
   background: linear-gradient(135deg, rgba(184, 205, 216, 0.9) 0%, rgba(184, 205, 216, 0.9) 100%);
-  -webkit-backdrop-filter: blur(100px) saturate(1.12);
-  backdrop-filter: blur(100px) saturate(1.12);
+  -webkit-backdrop-filter: blur(28px) saturate(1.08);
+  backdrop-filter: blur(28px) saturate(1.08);
   display: grid;
   justify-items: center;
   align-content: center;
@@ -2973,7 +2959,7 @@ main {
   background:
     radial-gradient(circle at 50% 45%, rgba(214, 232, 246, 0.72), rgba(176, 199, 215, 0.28) 60%, transparent 86%),
     radial-gradient(circle at 30% 74%, rgba(255, 255, 255, 0.34), transparent 58%);
-  filter: blur(50px);
+  filter: blur(18px);
 }
 
 .cta-banner-photo {
@@ -3064,8 +3050,7 @@ main {
     height 0.75s var(--ease),
     right 0.75s var(--ease),
     border-radius 0.75s var(--ease);
-  will-change: width, height, right, border-radius;
-}
+  }
 
 .cta-banner-button:hover .cta-banner-button-fill {
   right: 0;

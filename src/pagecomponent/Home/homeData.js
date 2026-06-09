@@ -5,12 +5,11 @@ export const ease = [0.22, 1, 0.36, 1];
 export const sectionViewport = { once: true, amount: 0.18 };
 
 export const reveal = {
-  hidden: { opacity: 0, y: 26, filter: "blur(6px)" },
+  hidden: { opacity: 0, y: 24 },
   show: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 1.05, ease }
+    transition: { duration: 0.7, ease }
   }
 };
 
@@ -31,19 +30,18 @@ export const serviceCardReveal = {
     y: 0,
     transition: {
       duration: 0.5,
-      delay: rowIndex * 0.2,
+      delay: rowIndex * 0.14,
       ease: "easeOut"
     }
   })
 };
 
 export const docCardReveal = {
-  hidden: { opacity: 0, y: 26, filter: "blur(6px)" },
+  hidden: { opacity: 0, y: 24 },
   show: (i) => ({
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.9, delay: i * 0.1, ease }
+    transition: { duration: 0.65, delay: i * 0.08, ease }
   })
 };
 
