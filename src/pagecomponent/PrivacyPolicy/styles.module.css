@@ -1,0 +1,355 @@
+.page {
+  width: 100%;
+  overflow: hidden;
+  color: var(--ink);
+}
+
+.hero {
+  position: relative;
+  padding: 42px 0 46px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(244, 240, 232, 0.2)),
+    linear-gradient(135deg, rgba(232, 255, 251, 0.8), rgba(244, 240, 232, 0.72));
+}
+
+.heroInner {
+  width: min(1140px, calc(100vw - 60px));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 56px;
+  align-items: center;
+}
+
+.logoLink {
+  display: grid;
+  place-items: center;
+  min-height: 240px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 24px 62px rgba(32, 25, 18, 0.08);
+}
+
+.logo {
+  width: 230px;
+  height: auto;
+  object-fit: contain;
+}
+
+.heroCopy {
+  max-width: 720px;
+}
+
+.eyebrow {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 9px 20px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 14px 34px rgba(35, 28, 19, 0.08);
+  color: #151515;
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.heroCopy h1 {
+  margin: 26px 0 0;
+  max-width: 700px;
+  font-size: 56px;
+  line-height: 1.08;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.heroCopy p {
+  margin: 24px 0 0;
+  max-width: 690px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.metaRow {
+  margin-top: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.metaRow span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  border-radius: 999px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.74);
+  color: rgba(35, 40, 39, 0.78);
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.homeLink {
+  position: relative;
+  width: fit-content;
+  min-height: 50px;
+  margin-top: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  border-radius: 70px;
+  border: 2px solid var(--aqua);
+  padding: 0 9px 0 22px;
+  background: var(--aqua);
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 14px 30px rgba(36, 197, 232, 0.22);
+}
+
+.homeLinkIcon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #f3efea;
+}
+
+.homeLinkIcon::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--ink);
+  border-right: 2px solid var(--ink);
+  transform: rotate(45deg);
+}
+
+.highlights {
+  width: min(1140px, calc(100vw - 60px));
+  margin: 42px auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.highlightCard {
+  min-height: 170px;
+  border-radius: 18px;
+  padding: 26px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 24px 62px rgba(32, 25, 18, 0.08);
+}
+
+.highlightCard span {
+  display: inline-flex;
+  color: #108477;
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.highlightCard p {
+  margin: 24px 0 0;
+  color: rgba(34, 39, 38, 0.78);
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.contentShell {
+  width: min(1140px, calc(100vw - 60px));
+  margin: 54px auto 86px;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 64px;
+  align-items: start;
+}
+
+.policyIndex {
+  position: sticky;
+  top: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  padding-top: 6px;
+}
+
+.policyIndex span {
+  margin-bottom: 6px;
+  color: #070909;
+  font-size: 18px;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.policyIndex a {
+  color: rgba(34, 39, 38, 0.72);
+  font-size: 15px;
+  line-height: 1.35;
+  transition: color 0.28s var(--ease), transform 0.28s var(--ease);
+}
+
+.policyIndex a:hover {
+  color: #108477;
+  transform: translateX(3px);
+}
+
+.policyBody {
+  min-width: 0;
+}
+
+.policySection {
+  padding: 34px 0;
+  border-top: 1px solid rgba(18, 27, 26, 0.14);
+}
+
+.policySection:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.policySection h2,
+.contactPanel h2 {
+  margin: 0;
+  color: #070909;
+  font-size: 32px;
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.policySection p,
+.contactPanel p {
+  margin: 18px 0 0;
+  max-width: 790px;
+  color: rgba(34, 39, 38, 0.78);
+  font-size: 17px;
+  line-height: 1.62;
+}
+
+.sectionList {
+  margin: 22px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  list-style: none;
+}
+
+.sectionList li {
+  position: relative;
+  padding-left: 24px;
+  color: rgba(34, 39, 38, 0.78);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.sectionList li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--aqua);
+}
+
+.contactPanel {
+  margin-top: 26px;
+  padding: 34px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 32px;
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(230, 255, 251, 0.94), rgba(255, 255, 255, 0.84));
+  box-shadow: 0 24px 62px rgba(32, 25, 18, 0.08);
+}
+
+.contactPanel h2 {
+  margin-top: 18px;
+}
+
+.contactDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: rgba(34, 39, 38, 0.78);
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.contactDetails a {
+  color: #108477;
+  font-weight: 600;
+}
+
+@media (max-width: 960px) {
+  .heroInner,
+  .contentShell {
+    width: min(680px, calc(100vw - 44px));
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .logoLink {
+    min-height: 190px;
+  }
+
+  .heroCopy h1 {
+    font-size: 44px;
+  }
+
+  .highlights {
+    width: min(680px, calc(100vw - 44px));
+    grid-template-columns: 1fr;
+  }
+
+  .policyIndex {
+    position: static;
+    display: none;
+  }
+
+  .contactPanel {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero {
+    padding: 28px 0 36px;
+  }
+
+  .heroInner,
+  .highlights,
+  .contentShell {
+    width: min(100%, calc(100vw - 28px));
+  }
+
+  .logo {
+    width: 200px;
+  }
+
+  .heroCopy h1 {
+    font-size: 36px;
+  }
+
+  .heroCopy p,
+  .policySection p,
+  .contactPanel p {
+    font-size: 16px;
+  }
+
+  .policySection h2,
+  .contactPanel h2 {
+    font-size: 27px;
+  }
+
+  .highlightCard,
+  .contactPanel {
+    padding: 24px 20px;
+  }
+}
